@@ -1,11 +1,12 @@
 from time import sleep
 from random import randrange
+from os import system
 
 class SudokuProgram:
 	
 	def __init__(self):
 		#Dictionary of selectable main options
-		self.__menu = {"0":self.__quit, "1":'something', "2":'something', "3":'something', "4":'something'}
+		self.__menu = {"0":self.__quit, "1":'something', "2":self.__showRules, "3":'something', "4":'something'}
 		#Shapes and some other stuff for text-based-art
 		self.__shapes = {0:" ", "V":chr(5), "H":chr(6), 1:chr(3), 2:chr(4), 3:chr(2), 4:chr(1), 5:chr(25), 6:chr(21), 7:chr(23), 8:chr(22), 9:chr(16)}
 
@@ -21,7 +22,7 @@ class SudokuProgram:
 		self.__displayMain() #Display main menu!
 		
 		choice = self.__optionChoice()
-		while not self.__validOptChoice(choice, 0, 0): ###Third argument is 0 just for now. It should be len(self.__menu) - 1 when the program is complete.
+		while not self.__validOptChoice(choice, 0, 0) and not self.__validOptChoice(choice, 2, 2): ###Third argument is 0 and 2 just for now. It should be len(self.__menu) - 1 when the program is complete.
 			self.__changeScreen()
 			self.__displayMain()
 			choice = self.__optionChoice()
@@ -30,6 +31,69 @@ class SudokuProgram:
 
 		#Call the chosen method
 		return chosen()
+
+
+	def __showRules(self):
+		self.__changeScreen()
+
+		print(" "*self.__leftSpace, "*****************", sep="")
+		print(" "*self.__leftSpace, "      Rules      ", sep="")
+		print(" "*self.__leftSpace, "*****************", sep="")
+		print()
+		print(" "*self.__leftSpace, "# Each puzzle consists of a 9x9 grid (with nine 3x3 boxes)", sep="")
+		print(" "*self.__leftSpace, "  containing given clues in various places.", sep="")
+		print()
+		print(" "*self.__leftSpace, "# Each of the nine 3x3 boxes has to contain all the numbers 1-9 within its squares.", sep="")
+		print()
+		print(" "*self.__leftSpace, "# Each number can only appear once in a row, column or box.\n", sep="")
+
+		H, V = "H", "V" #Horizontal line, Vertical line
+		N = "N" #Number
+		nums=[1,2,3,4,5,6,7,8,9]
+		aBox =(
+				(4,H,H,H,8,H,H,H,8,H,H,H,3),
+				(V,0,N,0,V,0,N,0,V,0,N,0,V),
+				(5,H,H,H,9,H,H,H,9,H,H,H,7),
+				(V,0,N,0,V,0,N,0,V,0,N,0,V),
+				(5,H,H,H,9,H,H,H,9,H,H,H,7),
+				(V,0,N,0,V,0,N,0,V,0,N,0,V),
+				(1,H,H,H,6,H,H,H,6,H,H,H,2)
+			  )
+		box = "There are 9 boxes like this --->   "
+		for rowNum in range(len(aBox)):
+			if rowNum == 3:
+				print(" "*self.__leftSpace, box, sep="", end="")
+			else:
+				print(" "*self.__leftSpace, " "*len(box), sep="", end="")
+			for letter in aBox[rowNum]:
+				if letter == "N":
+					print(nums.pop(randrange(len(nums))), end="")
+				else:
+					print(self.__shapes[letter], end="")
+			print()
+		nums=[1,2,3,4,5,6,7,8,9]
+		aRow =(
+				(4,H,H,H,8,H,H,H,8,H,H,H,8,H,H,H,8,H,H,H,8,H,H,H,8,H,H,H,8,H,H,H,8,H,H,H,3),
+				(V,0,N,0,V,0,N,0,V,0,N,0,V,0,N,0,V,0,N,0,V,0,N,0,V,0,N,0,V,0,N,0,V,0,N,0,V),
+				(1,H,H,H,6,H,H,H,6,H,H,H,6,H,H,H,6,H,H,H,6,H,H,H,6,H,H,H,6,H,H,H,6,H,H,H,2)
+			  )
+		row = "A row with numbers --->   "
+		for rowNum in range(len(aRow)):
+			if rowNum == 1:
+				print(" "*self.__leftSpace, row, sep="", end="")
+			else:
+				print(" "*self.__leftSpace, " "*len(row), sep="", end="")
+			for letter in aRow[rowNum]:
+				if letter == "N":
+					print(nums.pop(randrange(len(nums))), end="")
+				else:
+					print(self.__shapes[letter], end="")
+			print()
+		print()
+
+		input("Press Enter to go back to the main menu >>>")
+
+		return self.__mainMenu()
 
 
 	def __displayMain(self):
@@ -62,19 +126,21 @@ class SudokuProgram:
 
 		#Display options
 		print(" "*self.__leftSpace, "1 : Play\n", sep="")
-		print(" "*self.__leftSpace, "2 : Settings\n", sep="")
-		print(" "*self.__leftSpace, "3 : Something else\n", sep="")
+		print(" "*self.__leftSpace, "2 : Rules\n", sep="")
+		print(" "*self.__leftSpace, "3 : Settings\n", sep="")
 		print(" "*self.__leftSpace, "0 : Quit\n", sep="")
 		print("\n")
 
 
 	def __changeScreen(self):
-		#Prints next-line many times so that the old texts will disappear from the current screen
+		#If the game is running on a Windows Command Prompt, this will clear the screen
+		system("cls")
+		#Just to make sure, print next-line many times so that the old texts will definately disappear from the current screen
 		print("\n"*100)
 
 
 	def __optionChoice(self):
-		choice = input("Choose an options : ") #Take input
+		choice = input("Choose an option : ") #Take input
 		choice = choice.replace(" ", "") #Remove any empty space
 		return choice
 
