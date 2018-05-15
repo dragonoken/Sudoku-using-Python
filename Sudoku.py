@@ -8,9 +8,6 @@ class SudokuProgram:
 		#Shapes and some other stuff for text-based-art
 		self.__shapes = {0:" ", "V":chr(5), "H":chr(6), 1:chr(3), 2:chr(4), 3:chr(2), 4:chr(1), 5:chr(25), 6:chr(21), 7:chr(23), 8:chr(22), 9:chr(16)}
 
-		#Spaces from the left side (can be adjusted in settings)
-		self.__hScrPosition = 3
-
 		#Go to the main menu (Actual start)
 		return self.__mainMenu()
 
@@ -20,7 +17,7 @@ class SudokuProgram:
 		self.__displayMain() #Display main menu!
 
 		#Dictionary of selectable main options
-		menu = {"0":self.__quit, "1":self.__playOption, "2":self.__showRules, "3":'self.__settings'} #Settings soon to be added
+		menu = {"0":self.__quit, "1":self.__playOption, "2":self.__showRules}
 		
 		choice = self.__optionChoice()
 		while not self.__validOptChoice(choice, 0, 3) or choice == "3": ###3 not available yet. Soon to be updated.
@@ -41,13 +38,13 @@ class SudokuProgram:
 		self.__displayPlayOpt() #Display play options
 
 		#Dictionary of selectable play options
-		menu = {"0":self.__mainMenu, "1":'self.__newGame', "2":'self.__loadGame', "3":'self.__customGame'} ###Soon to be updated
+		menu = {"0":self.__mainMenu, "1":'Play', "2":'Build/Edit Game'} ###Soon to be updated
 
 		choice = self.__optionChoice()
-		while not self.__validOptChoice(choice, 0, 3) or choice in ("1", "2", "3"): ###No play options are available so far
+		while not self.__validOptChoice(choice, 0, 3) or choice in ("1", "2"): ###No play options are available so far
 			self.__changeScreen()
 			self.__displayPlayOpt()
-			if choice in ("1", "2", "3"):
+			if choice in ("1", "2"):
 				print("Playing options are not available yet, Sorry!")
 			choice = self.__optionChoice()
 
@@ -60,16 +57,16 @@ class SudokuProgram:
 	def __showRules(self):
 		self.__changeScreen()
 
-		print(" "*self.__hScrPosition, "@@@@@@@@@@@@@@@@@", sep="")
-		print(" "*self.__hScrPosition, "    R u l e s    ", sep="")
-		print(" "*self.__hScrPosition, "@@@@@@@@@@@@@@@@@", sep="")
+		print("   @@@@@@@@@@@@@@@@@", sep="")
+		print("       R u l e s    ", sep="")
+		print("   @@@@@@@@@@@@@@@@@", sep="")
 		print()
-		print(" "*self.__hScrPosition, "# Each puzzle consists of a 9x9 grid (with nine 3x3 boxes)", sep="")
-		print(" "*self.__hScrPosition, "  containing given clues in various places.", sep="")
+		print("   # Each puzzle consists of a 9x9 grid (with nine 3x3 boxes)", sep="")
+		print("     containing given clues in various places.", sep="")
 		print()
-		print(" "*self.__hScrPosition, "# Each of the nine 3x3 boxes has to contain all the numbers 1-9 within its squares.", sep="")
+		print("   # Each of the nine 3x3 boxes has to contain all the numbers 1-9 within its squares.", sep="")
 		print()
-		print(" "*self.__hScrPosition, "# Each number can only appear once in a row, column or box.\n", sep="")
+		print("   # Each number can only appear once in a row, column or box.\n", sep="")
 
 		H, V = "H", "V" #Horizontal line, Vertical line
 		N = "N" #Number
@@ -86,9 +83,9 @@ class SudokuProgram:
 		box = "There are 9 boxes like this --->   "
 		for rowNum in range(len(aBox)):
 			if rowNum == 3:
-				print(" "*self.__hScrPosition, box, sep="", end="")
+				print("   ", box, sep="", end="")
 			else:
-				print(" "*self.__hScrPosition, " "*len(box), sep="", end="")
+				print("   ", " "*len(box), sep="", end="")
 			for letter in aBox[rowNum]:
 				if letter == "N":
 					print(nums.pop(randrange(len(nums))), end="")
@@ -104,16 +101,16 @@ class SudokuProgram:
 		row = "A row with numbers --->   "
 		for rowNum in range(len(aRow)):
 			if rowNum == 1:
-				print(" "*self.__hScrPosition, row, sep="", end="")
+				print("   ", row, sep="", end="")
 			else:
-				print(" "*self.__hScrPosition, " "*len(row), sep="", end="")
+				print("   ", " "*len(row), sep="", end="")
 			for letter in aRow[rowNum]:
 				if letter == "N":
 					print(nums.pop(randrange(len(nums))), end="")
 				else:
 					print(self.__shapes[letter], end="")
 			print()
-		print()
+		print("\n\n")
 
 		input("Press Enter to go back to the main menu >>>")
 
@@ -136,24 +133,23 @@ class SudokuProgram:
 				(V,0,0,0,0,0,0,0,0,V,0,V,0,0,0,0,0,0,0,0,V,0,V,0,0,0,0,0,0,4,H,2,0,1,H,3,0,0,0,0,4,H,2,0,V,0,0,V,0,0,0,V,0,V,0,V,0,0,0,0,0,0,0,0,V,0,1,H,H,H,6,H,H,H,6,H,H,H,2),
 				(1,H,H,H,H,H,H,H,H,2,0,1,H,H,H,H,H,H,H,H,2,0,1,H,H,H,H,H,H,2,0,0,0,0,0,1,H,H,H,H,2,0,0,0,1,H,H,2,0,0,0,1,H,2,0,1,H,H,H,H,H,H,H,H,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
 				)
-		print(" "*self.__hScrPosition, "-"*79, "\n", " "*self.__hScrPosition, "-"*79, sep="") #Line decoration
+		print("   ", "-"*79, "\n   ", "-"*79, sep="") #Line decoration
 		for row in SUDOKU:
-			print(" "*self.__hScrPosition, end="")
+			print("   ", end="")
 			for letter in row:
 				if letter == "N": #Pop and print a random number from the list 'nums'
 					print(nums.pop(randrange(len(nums))), end="")
 				else: #Print the shape according to the shape dictionary
 					print(self.__shapes[letter], end="")
 			print() #Next line
-		print(" "*self.__hScrPosition, "-"*79, "\n", " "*self.__hScrPosition, "-"*79, sep="") #Line decoration
+		print("   ", "-"*79, "\n   ", "-"*79, sep="") #Line decoration
 		#SUDOKU art finished
 
 		#Display options
-		print(" "*self.__hScrPosition, "1 : Play\n", sep="")
-		print(" "*self.__hScrPosition, "2 : Rules\n", sep="")
-		print(" "*self.__hScrPosition, "3 : Settings\n", sep="")
-		print(" "*self.__hScrPosition, "0 : Quit\n", sep="")
-		print("\n")
+		print("   1 : Play\n", sep="")
+		print("   2 : Rules\n", sep="")
+		print("   0 : Quit", sep="")
+		print("\n\n")
 
 
 	def __displayPlayOpt(self):
@@ -173,9 +169,9 @@ class SudokuProgram:
 				(1,H,H,H,6,H,H,H,6,H,H,H,2,0,V,0,0,V,0,0,0,0,0,0,0,V,0,0,0,0,0,0,0,0,V,0,V,0,0,V,0,0,V,0,0,V,0,0,0,0,V,0,0,V,0,0,0,0,1,H,H,H,6,H,H,H,6,H,H,H,2),
 				(0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,H,H,2,0,0,0,0,0,0,0,1,H,H,H,H,H,H,H,H,2,0,1,H,H,2,0,0,1,H,H,2,0,0,0,0,1,H,H,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
 				)
-		print(" "*self.__hScrPosition, "-"*71, "\n", " "*self.__hScrPosition, "-"*71, sep="") #Line decoration
+		print("   ", "-"*71, "\n   ", "-"*71, sep="") #Line decoration
 		for row in PLAY:
-			print(" "*self.__hScrPosition, end="")
+			print("   ", end="")
 			for letter in row:
 				if letter == "N": #Pop and print a random number from the list 'nums1'
 					print(nums1.pop(randrange(len(nums1))), end="")
@@ -184,15 +180,15 @@ class SudokuProgram:
 				else: #Print the shape according to the shape dictionary
 					print(self.__shapes[letter], end="")
 			print() #Next line
-		print(" "*self.__hScrPosition, "-"*71, "\n", " "*self.__hScrPosition, "-"*71, sep="") #Line decoration
+		print("   ", "-"*71, "\n   ", "-"*71, sep="") #Line decoration
 		#PLAY art finished
 
 		#Display options
-		print(" "*self.__hScrPosition, "1 : New Game\n", sep="")
-		print(" "*self.__hScrPosition, "2 : Saved Game\n", sep="")
-		print(" "*self.__hScrPosition, "3 : Custom Game\n", sep="")
-		print(" "*self.__hScrPosition, "0 : Back\n", sep="")
-		print("\n")
+		print("   1 : Play\n", sep="")
+		print("   2 : Build/Edit Game\n", sep="")
+		print()
+		print("   0 : Back", sep="")
+		print("\n\n")
 
 
 	def __changeScreen(self):
