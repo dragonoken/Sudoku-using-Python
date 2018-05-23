@@ -4,5 +4,10 @@ This is a text-based game of Sudoku.
 
 ...It's still a work in progress.
 
-Most of the visual designs are done so far,
-but the actual algorithms for the game is not there yet.
+# Current Working State
+
++Prototype of the text-based main game interface created
+
++Basic game objects finished (cell, grid)
+
+~Working on algorithms for playing game

@@ -7,11 +7,11 @@ def visualizeCell(cell):
 		  "      ", chr(3), chr(6), chr(6), chr(6)*len(value), chr(4), sep="")
 
 def cellInfo(cell):
-	print("---------------------------------------")
+	print("   -------------------------------------------------------")
 	print("   Cell Value :", cell.getValue())
 	print("   Possible Value String :", cell.getPossibles())
 	print("   Can Be Edited :", cell.isEditable())
-	print("---------------------------------------")
+	print("   -------------------------------------------------------")
 
 def changeValue(cell):
 	value = input("Value to assign : ")

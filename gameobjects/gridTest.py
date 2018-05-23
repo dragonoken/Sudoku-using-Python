@@ -1,4 +1,5 @@
 from grid import Grid
+from cellTest import cellInfo
 
 class Grid(Grid):
 	def isBuilding(self):
@@ -6,6 +7,9 @@ class Grid(Grid):
 
 	def isEditableAt(self, row, col):
 		return self.__bigGrid[ row * self.__gridLength + col ].isEditable()
+
+	def getCellAt(self, row, col):
+		return self.__bigGrid[ row * self.__gridLength + col ]
 
 def rowColInput():
 	clear()
@@ -179,19 +183,15 @@ def changeValueMode(grid, scrPosition=3):
 	while back == False:
 		clear()
 		visualizeGrid(grid, showZero=True, indicateUneditable=True, cursor=(True, cRow, cCol), scrPosition=scrPosition)
-		print()
+		cellInfo(grid.getCellAt(cRow,cCol))
 		print( " " * scrPosition, "*-----------------------( Case Does Not Matter )-----------------------*", sep="" )
-		print()
-		print( " " * scrPosition, "W,A,S,D : Move the Cursor UP/LEFT/DOWN/RIGHT   (Combinations are allowed)", sep="" )
-		print()
-		print( " " * scrPosition, "C : Change the Value", sep="" )
-		print()
+		print( " " * scrPosition, "W,A,S,D : Move the Cursor UP/LEFT/DOWN/RIGHT  (Combinations are allowed)", sep="" )
+		print( " " * scrPosition, "(Enter) : Change the Value", sep="" )
 		print( " " * scrPosition, "BACK : Go Back to the Main Interface", sep="" )
-		print()
 		print( " " * scrPosition, "*----------------------------------------------------------------------*\n", sep="" )
 		ctrl = input("Control : ").replace(" ", "").lower()
 
-		if ctrl == "c":
+		if ctrl == "":
 			changeValue(cRow, cCol)
 		elif ctrl == "back":
 			back = True
