@@ -10,4 +10,8 @@ This is a text-based game of Sudoku.
 
 +Basic game objects finished (cell, grid)
 
-~Working on algorithms for playing game
++Algorithms for playing game done
+
++Text-based UI finished
+
++Finally Playable!
