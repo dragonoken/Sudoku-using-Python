@@ -28,6 +28,8 @@ class Cell:
 
     def setValue(self, num):
         """
+        setValue(int)
+
         Sets the value of the cell
         The value must be between the minimum value and maximum value, including both ends
         If the cell's editable state is False, or the argument is not an integer, does nothing
@@ -39,12 +41,16 @@ class Cell:
 
     def getValue(self):
         """
+        getValue()
+
         Returns the value of the cell
         """
         return self.__value
 
     def setPossibles(self, possibles):
         """
+        setPossibles(str)
+
         Takes a string as the argument
         According to the string, sets the 'possibles' string
         """
@@ -78,12 +84,16 @@ class Cell:
 
     def getPossibles(self):
         """
+        getPossibles()
+
         Returns 'possibles' string
         """
         return self.__possibles
 
     def setEditable(self, tf):
         """
+        setEditable(bool)
+
         Takes boolean
         Sets the editable state of the cell
         """
@@ -91,6 +101,8 @@ class Cell:
 
     def isEditable(self):
         """
-        Returns the cell's editable state
+        isEditable()
+
+        Returns the cell's editable state as a boolean
         """
         return self.__editable
