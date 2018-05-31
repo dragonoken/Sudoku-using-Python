@@ -28,7 +28,7 @@ class Cell:
 
     def setValue(self, num):
         """
-        setValue(int, int)
+        setValue(int)
 
         Sets the value of the cell
         The value must be between the minimum value and maximum value, including both ends

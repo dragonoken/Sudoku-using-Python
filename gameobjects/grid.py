@@ -190,6 +190,47 @@ class Grid:
             simulated = self
         return not simulated.isSolvable()
 
+    def bruteSolve(self):
+        """
+        bruteSolve()
+
+        Solves the puzzle using brute force search
+        """
+        if not self.fundamentallyImpossible() and not self.isSolved():
+            if self.__buildMode is True:
+                self.toggleBuildMode()
+            self.clearGrid()
+            minPossibleLen = 10
+            minPossibleCell = None
+            cellsInProcess = []
+            for cell in self.__bigGrid:
+                if cell.isEditable() and len(cell.getPossibles().split("#")[1:]) < minPossibleLen:
+                    minPossibleCell = cell
+                    minPossibleLen = len(cell.getPossibles().split("#")[1:])
+            if minPossibleCell is not None:
+                cellsInProcess.append((minPossibleCell, minPossibleCell.getPossibles().split("#")[1:]))
+            while cellsInProcess != [] and not self.isSolved():
+                if cellsInProcess[-1][1] == []:
+                    currentCell = cellsInProcess.pop(-1)[0]
+                    currentCell.setValue(0)
+                    self.refreshPossibles(self.__bigGrid.index(currentCell) // self.__gridLength, self.__bigGrid.index(currentCell) % self.__gridLength)
+                else:
+                    currentCell = cellsInProcess[-1][0]
+                    currentVal = int(cellsInProcess[-1][1].pop(0))
+                    currentCell.setValue(currentVal)
+                    self.refreshPossibles(self.__bigGrid.index(currentCell) // self.__gridLength, self.__bigGrid.index(currentCell) % self.__gridLength)
+                    if self.isSolvable():
+                        minPossibleLen = 10
+                        minPossibleCell = None
+                        for cell in (cell for cell in self.__bigGrid if cell not in (processingCell[0] for processingCell in cellsInProcess)):
+                            if cell.isEditable() and len(cell.getPossibles().split("#")[1:]) < minPossibleLen:
+                                minPossibleCell = cell
+                                minPossibleLen = len(cell.getPossibles().split("#")[1:])
+                        if minPossibleCell is not None:
+                            cellsInProcess.append((minPossibleCell, minPossibleCell.getPossibles().split("#")[1:]))
+            if not self.isSolved():
+                self.clearGrid()
+
     def refreshPossibles(self, *row_col):
         """
         refreshPossibles()          all cells

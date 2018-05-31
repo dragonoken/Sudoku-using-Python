@@ -184,6 +184,16 @@ class Game:
             impossible = True
         return impossible
 
+    def solve(self):
+        """
+        solve()
+
+        Automatically solves the puzzle, if possible.
+        Uses a brute force search
+        """
+        if self.__gamegrid is not None:
+            self.__gamegrid.bruteSolve()
+
     def currentGameExists(self):
         """
         currentGameExists()

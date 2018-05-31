@@ -14,6 +14,10 @@ class Sudoku:
         #The actual CORE of this program
         self.__game = Game()
 
+        #Recommanded window size
+        self.__changeScreen()
+        input("Make sure\nyour console size\nis\nat least\n86 character wide\nand\n28 character tall\n\n\nPress Enter to Continue >>> ")
+
         #Go to the main menu (Actual start)
         self.__mainMenu()
 
@@ -179,6 +183,7 @@ class Sudoku:
             rCursor = 0
             cCursor = 0
             solved = self.__game.isSolved()
+            magic = 3
             while quitting is False and solved is False:
                 self.__changeScreen()
                 self.__visualizeGrid(cursor=(True, rCursor, cCursor))
@@ -227,11 +232,27 @@ class Sudoku:
                                 save = self.__saving(puzzle=False, file=save)
                             elif saveChoice == "2":
                                 quitting = True
+                    magic = 3
                 elif all(c in "wasd" for c in playerAction):
                     rCursor += playerAction.count("s") - playerAction.count("w")
                     cCursor += playerAction.count("d") - playerAction.count("a")
                     rCursor %= 9
                     cCursor %= 9
+                    magic = 3
+                elif playerAction in ("brute", "force", "incoming"):
+                    if playerAction == "brute":
+                        magic = 2
+                    elif magic == 2 and playerAction == "force":
+                        magic = 1
+                    elif magic == 1 and playerAction == "incoming":
+                        magic = 3
+                        print("BRUTE FORCE SEARCH IN PROCESS... (This might take a while)")
+                        self.__game.solve()
+                        solved = self.__game.isSolved()
+                    else:
+                        magic = 3
+                else:
+                    magic = 3
             if solved is True:
                 self.__changeScreen()
                 self.__visualizeGrid()
@@ -629,10 +650,10 @@ class Sudoku:
                     if not editables[9 * row + col]:
                         print(chr(5), ">", cellStr, "<", sep="", end="")
                     else:
-                        print(chr(5), "[", cellStr, "]", sep="", end="")
+                        print(chr(5), "<", cellStr, ">", sep="", end="")
                 else:
                     if not editables[9 * row + col]:
-                        print(chr(5), "(", cellStr, ")", sep="", end="")
+                        print(chr(5), "`", cellStr, "'", sep="", end="")
                     else:
                         print(chr(5), " ", cellStr, " ", sep="", end="")
                 if col % 3 == 2:
