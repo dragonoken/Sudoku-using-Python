@@ -201,8 +201,9 @@ class Sudoku:
                 if len(playerAction) == 1 and playerAction not in "wasd":
                     if playerAction in "0123456789":
                         self.__game.setValueAt(rCursor, cCursor, int(playerAction))
-                        self.__game.saveGame()
                         solved = self.__game.isSolved()
+                        if not solved:
+                            self.__game.saveGame()
                     elif self.__game.undoable() and playerAction == "z":
                         self.__game.undo()
                         self.__game.saveGame()
